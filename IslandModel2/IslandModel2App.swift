@@ -6,6 +6,10 @@
 //
 
 import SwiftUI
+import Combine
+
+
+
 
 @main
 struct IslandModel2App: App {
