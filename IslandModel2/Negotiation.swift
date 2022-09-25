@@ -23,32 +23,60 @@ protocol NegotiationBuyerProtocol {
     func sellerNegotiation() -> NegotiationResult
     func buyerNegoatiation() -> NegotiationResult
     */
-    func getBuyAmount() -> Double
-    func getBuyPrice() -> Double
+    func negotiationBuyAmount() -> Double
+    func negotiationBuyPrice() -> Double
 }
 
 extension MineBase {
     
-    func getSellPrice() -> Double {
+    func negotiationSellPrice() -> Double {
         return self.price
     }
     
-    func getSellAmount() -> Double {
+    func negotiationSellAmount() -> Double {
         return self.storage
     }
 }
 
+
+
 protocol NegotiationSellerProtocol {
-    func getSellPrice() -> Double
-    func getSellAmount() -> Double
+    func negotiationSellPrice() -> Double
+    func negotiationSellAmount() -> Double
 }
 
 extension CityBase {
-    func getBuyAmount() -> Double {
+    func negotiationBuyAmount() -> Double {
         return self.storageMax - self.storage
     }
     
-    func getBuyPrice() -> Double {
+    func negotiationBuyPrice() -> Double {
+        return self.buyPrice
+    }
+    
+    func negotiationSellAmount() -> Double {
+        return self.storage
+    }
+    
+    func negotiationSellPrice() -> Double {
+        return self.sellPrice
+    }
+}
+
+extension PortBase {
+    func negotiationSellPrice() -> Double {
+        return self.sellPrice
+    }
+    
+    func negotiationSellAmount() -> Double {
+        return self.storage
+    }
+    
+    func negotiationBuyAmount() -> Double {
+        return self.storageMax - self.storage
+    }
+    
+    func negotiationBuyPrice() -> Double {
         return self.buyPrice
     }
 }

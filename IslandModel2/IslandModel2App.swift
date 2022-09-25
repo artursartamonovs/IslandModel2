@@ -8,9 +8,6 @@
 import SwiftUI
 import Combine
 
-
-
-
 @main
 struct IslandModel2App: App {
     var body: some Scene {

@@ -127,10 +127,10 @@ struct CityContentView: View {
                     let buyer = mh.cb
                     let seller = mh.mb
                     let ng = Negotiation();
-                    ng.offerBuyAmount(buyer.getBuyAmount())
-                    ng.offferBuyPrice(buyer.getBuyPrice())
-                    ng.offerSellPrice(seller.getSellPrice())
-                    ng.offerSellAmount(seller.getSellAmount())
+                    ng.offerBuyAmount(buyer.negotiationBuyAmount())
+                    ng.offferBuyPrice(buyer.negotiationBuyPrice())
+                    ng.offerSellPrice(seller.negotiationSellPrice())
+                    ng.offerSellAmount(seller.negotiationSellAmount())
                     ng.simpleNegotiation()
                     let sellerResult = ng.sellerNegotiation()
                     let buyerResult = ng.buyerNegoatiation()
@@ -206,20 +206,56 @@ extension View {
 }
 
 struct PortContentView:View {
-
+    @EnvironmentObject var mh:SimulationController
     var body: some View {
         VStack {
             HStack {
                 Text("Storage")
-                Text("100/100")
+                Text(mh.portStorageLabel)
             }
             HStack {
                 Text("Sell price")
-                Text("2")
+                Text(mh.portSellPriceLabel)
+            }
+            HStack {
+                Text("Buy price")
+                Text(mh.portBuyPriceLabel)
             }
             HStack {
                 Text("Demand")
-                Text("50")
+                Text(mh.portDemandLabel)
+            }
+            HStack {
+                Button(action:{
+                    mh.runPbStep()
+                    print("Mine: Press Step button")
+                }) {
+                    Text("Step")
+                }
+            }
+            HStack {
+                Button(action:{
+                    let buyer = mh.pb
+                    let seller = mh.cb
+                    let ng = Negotiation();
+                    ng.offerBuyAmount(buyer.negotiationBuyAmount())
+                    ng.offferBuyPrice(buyer.negotiationBuyPrice())
+                    ng.offerSellPrice(seller.negotiationSellPrice())
+                    ng.offerSellAmount(seller.negotiationSellAmount())
+                    ng.simpleNegotiation()
+                    let sellerResult = ng.sellerNegotiation()
+                    let buyerResult = ng.buyerNegoatiation()
+                    if sellerResult.succeffull && buyerResult.succeffull {
+                        print("Transaction can be succesfull")
+                        let _ = buyer.buy(buyerResult.amount, buyerResult.price)
+                        let _ = seller.sell(sellerResult.amount, sellerResult.price)
+                    }
+                    print("City: Press Trade button")
+                    mh.runCbStep()
+                    
+                }) {
+                    Text("Trade")
+                }
             }
         }
     }

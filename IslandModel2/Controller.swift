@@ -12,7 +12,8 @@ class SimulationController: ObservableObject {
     let didChange = PassthroughSubject<Bool,Never>()
     let didChangeStr = PassthroughSubject<String,Never>()
     var mb:MineBase
-    var cb: CityBase
+    var cb:CityBase
+    var pb:PortBase
     @Published var mineStorageLabel:String
     @Published var mineProdcutionLabel:String
     @Published var minePriceLabel:String
@@ -21,10 +22,16 @@ class SimulationController: ObservableObject {
     @Published var citySellPriceLabel:String
     @Published var cityBuyPriceLabel:String
     @Published var cityCashLabel:String
+    @Published var portStorageLabel:String
+    @Published var portSellPriceLabel:String
+    @Published var portBuyPriceLabel:String
+    @Published var portCashLabel:String
+    @Published var portDemandLabel:String
     
     init() {
         self.mb = MineBase()
         self.cb = CityBase()
+        self.pb = PortBase()
         mineCashLabel = ""
         minePriceLabel = ""
         mineStorageLabel = ""
@@ -33,6 +40,11 @@ class SimulationController: ObservableObject {
         citySellPriceLabel = ""
         cityBuyPriceLabel = ""
         cityStorageLabel = ""
+        portCashLabel = ""
+        portStorageLabel = ""
+        portBuyPriceLabel = ""
+        portSellPriceLabel = ""
+        portDemandLabel = ""
     }
     
     func update() {
@@ -44,6 +56,11 @@ class SimulationController: ObservableObject {
         citySellPriceLabel = self.cb.getSellPrice()
         cityBuyPriceLabel = self.cb.getBuyPrice()
         cityStorageLabel = self.cb.getStorage()
+        portCashLabel = self.pb.getCash()
+        portStorageLabel = self.pb.getStorage()
+        portBuyPriceLabel = self.pb.getBuyPrice()
+        portSellPriceLabel = self.pb.getSellPrice()
+        portDemandLabel = self.pb.getDemand()
     }
     
     func runMbStep() {
@@ -53,6 +70,11 @@ class SimulationController: ObservableObject {
     
     func runCbStep() {
         cb.simulationStep()
+        update()
+    }
+    
+    func runPbStep() {
+        pb.simulationStep()
         update()
     }
     

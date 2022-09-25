@@ -11,7 +11,7 @@ import Foundation
 
 
 
-class CityBase: CityBaseDelegate, NegotiationBuyerProtocol {
+class CityBase: CityBaseDelegate, NegotiationBuyerProtocol, NegotiationSellerProtocol {
     
     var storage:Double = 0;
     var storageMax: Double = 100;
