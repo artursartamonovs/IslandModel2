@@ -57,6 +57,8 @@ class CityBase: CityBaseDelegate, NegotiationBuyerProtocol, NegotiationSellerPro
     }
     
     func requestBuyAmount(_ requestAmount: Double) -> Double {
+       
+        
         print("Not implemented")
         abort()
         return 0.0

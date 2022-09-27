@@ -86,6 +86,7 @@ class SimulationController: ObservableObject {
     func runAllStep() {
         mb.simulationStep()
         cb.simulationStep()
+        pb.simulationStep()
         update()
     }
     

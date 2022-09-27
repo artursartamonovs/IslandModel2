@@ -238,6 +238,9 @@ struct PortContentView:View {
                     let buyer = mh.pb
                     let seller = mh.cb
                     let ng = Negotiation();
+                    print("Port")
+                    print("\(buyer.negotiationBuyAmount()) \(buyer.negotiationBuyPrice())")
+                    print("\(seller.negotiationSellAmount()) \(seller.negotiationSellPrice())")
                     ng.offerBuyAmount(buyer.negotiationBuyAmount())
                     ng.offferBuyPrice(buyer.negotiationBuyPrice())
                     ng.offerSellPrice(seller.negotiationSellPrice())
@@ -250,8 +253,8 @@ struct PortContentView:View {
                         let _ = buyer.buy(buyerResult.amount, buyerResult.price)
                         let _ = seller.sell(sellerResult.amount, sellerResult.price)
                     }
-                    print("City: Press Trade button")
-                    mh.runCbStep()
+                    print("Port: Press Trade button")
+                    mh.runPbStep()
                     
                 }) {
                     Text("Trade")

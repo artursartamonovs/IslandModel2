@@ -123,11 +123,12 @@ class Negotiation {
         }
         self.sellerResult.amount = transactionAmount
         self.buyerResult.amount = transactionAmount
+        print("N: \(transactionAmount)")
         
         //negotiate price
         var agreeOnPrice = false
         //simple logic behind negotiation
-        if (self.buyerPrice <= self.sellerPrice) {
+        if (self.buyerPrice >= self.sellerPrice) {
             agreeOnPrice = true
             sellerResult.price = self.buyerPrice
             buyerResult.price = self.buyerPrice
@@ -136,9 +137,11 @@ class Negotiation {
         if agreeOnPrice {
             sellerResult.succeffull = true
             buyerResult.succeffull = true
+            print("NG agree on price")
         } else {
             sellerResult.succeffull = false
             buyerResult.succeffull = false
+            print("NG not agree on price")
         }
     }
     func sellerNegotiation() -> NegotiationResult {

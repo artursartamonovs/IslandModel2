@@ -83,7 +83,7 @@ class PortBase: PortBaseDelegate, NegotiationBuyerProtocol, NegotiationSellerPro
     
     func sell(_ requestAmount: Double, _ requestPrice: Double) -> Double {
         let totalPrice:Double = requestAmount*requestPrice;
-        print("Mine -> Agreed sell price \(requestPrice) amount \(requestAmount)");
+        print("Port -> Agreed sell price \(requestPrice) amount \(requestAmount)");
         self.cash += totalPrice;
         self.storage -= requestAmount;
         
