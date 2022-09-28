@@ -195,6 +195,8 @@ struct MineContentView: View {
             HStack {
                 Button(action:{
                     mh.runMbStep()
+                    mh.ec.mineAddVal(mh.mb.getStorageChange())
+                    mh.updateStat()
                     print("Mine: Press Step button")
                 }) {
                     Text("Step")
@@ -269,23 +271,9 @@ struct PortContentView:View {
     }
 }
 
-struct StatCounter: Identifiable {
-    let statName: String
-    let stat1d: String
-    let stat5d: String
-    let stat30d: String
-    let statAll: String
-    let id = UUID()
-}
 
-private var stat = [
-    StatCounter(statName: "Mined", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
-    StatCounter(statName: "Export", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
-    StatCounter(statName: "Import", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
-    StatCounter(statName: "Storage", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
-    StatCounter(statName: "Sell", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
-    StatCounter(statName: "Buy", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0")
-]
+
+
 
 struct StatContentView: View {
     @EnvironmentObject var mh:SimulationController
@@ -294,15 +282,18 @@ struct StatContentView: View {
             HStack {
                 Text("Table of statistics")
             }
-            //VStack {
-                Table(stat) {
+            VStack {
+            if (mh.updateEconomy>0) {
+                Table(mh.ec.tableContent) {
                     TableColumn("Stat", value:\.statName)
-                    TableColumn("1d", value:\.stat1d)
-                    TableColumn("5d", value:\.stat5d)
-                    TableColumn("30d", value:\.stat30d)
+                    TableColumn("1d",   value:\.stat1d)
+                    TableColumn("5d",   value:\.stat5d)
+                    TableColumn("30d",  value:\.stat30d)
                     TableColumn("Stat", value:\.statAll)
                 }
-            //}
+                
+            }
+            }
             HStack {
                 Text("All data")
             }

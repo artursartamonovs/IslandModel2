@@ -76,6 +76,8 @@ class EconomyCounter {
     var sellCounter: StatAverageValue
     var buyCounter: StatAverageValue
     
+    var tableContent: [StatCounter]
+    
     init() {
         exportCounter = StatAverageValue(days: 30)
         importCounter = StatAverageValue(days: 30)
@@ -83,6 +85,7 @@ class EconomyCounter {
         storageCounter = StatAverageValue(days: 30)
         sellCounter = StatAverageValue(days: 30)
         buyCounter = StatAverageValue(days: 30)
+        tableContent = Array(repeating: StatCounter(), count: 6)
     }
     
     func reset() {
@@ -92,6 +95,12 @@ class EconomyCounter {
         storageCounter.reset()
         sellCounter.reset()
         buyCounter.reset()
+    }
+    
+    func updateTable() {
+        //update mine
+        tableContent[2].statName = "Mine"
+        tableContent[2].stat1d = String(mineCounter.get1dAVG())
     }
     
     func mineAddVal(_ val: Double) {

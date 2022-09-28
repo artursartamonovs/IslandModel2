@@ -15,6 +15,11 @@ class SimulationController: ObservableObject {
     var cb:CityBase
     var pb:PortBase
     var ec:EconomyCounter
+    @Published var updateEconomy: Int {
+        willSet {
+            objectWillChange.send()
+        }
+    }
     @Published var mineStorageLabel:String
     @Published var mineProdcutionLabel:String
     @Published var minePriceLabel:String
@@ -47,6 +52,7 @@ class SimulationController: ObservableObject {
         portBuyPriceLabel = ""
         portSellPriceLabel = ""
         portDemandLabel = ""
+        updateEconomy = 1
     }
     
     func update() {
@@ -90,6 +96,11 @@ class SimulationController: ObservableObject {
         cb.simulationStep()
         pb.simulationStep()
         update()
+    }
+    
+    func updateStat() {
+        self.updateEconomy += 1
+        self.ec.updateTable()
     }
     
 }
