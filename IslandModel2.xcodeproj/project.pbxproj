@@ -11,7 +11,8 @@
 		8D4E5B1E28DFB33E00C38BBE /* Negotiation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E5B1D28DFB33E00C38BBE /* Negotiation.swift */; };
 		8D4E5B2028DFB3B500C38BBE /* Controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E5B1F28DFB3B500C38BBE /* Controller.swift */; };
 		8D4E5B2228E09F8A00C38BBE /* PortModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E5B2128E09F8A00C38BBE /* PortModel.swift */; };
-		8D4E5B2428E09F9700C38BBE /* Stats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E5B2328E09F9700C38BBE /* Stats.swift */; };
+		8D4E5B2428E09F9700C38BBE /* EconomyCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E5B2328E09F9700C38BBE /* EconomyCounter.swift */; };
+		8D4E5B2628E4592600C38BBE /* StatCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E5B2528E4592600C38BBE /* StatCounter.swift */; };
 		8D6DD55828D4CA4100738157 /* IslandModel2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6DD55728D4CA4100738157 /* IslandModel2App.swift */; };
 		8D6DD55A28D4CA4100738157 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D6DD55928D4CA4100738157 /* ContentView.swift */; };
 		8D6DD55C28D4CA4500738157 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8D6DD55B28D4CA4500738157 /* Assets.xcassets */; };
@@ -45,7 +46,8 @@
 		8D4E5B1D28DFB33E00C38BBE /* Negotiation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Negotiation.swift; sourceTree = "<group>"; };
 		8D4E5B1F28DFB3B500C38BBE /* Controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controller.swift; sourceTree = "<group>"; };
 		8D4E5B2128E09F8A00C38BBE /* PortModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortModel.swift; sourceTree = "<group>"; };
-		8D4E5B2328E09F9700C38BBE /* Stats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stats.swift; sourceTree = "<group>"; };
+		8D4E5B2328E09F9700C38BBE /* EconomyCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EconomyCounter.swift; sourceTree = "<group>"; };
+		8D4E5B2528E4592600C38BBE /* StatCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCounter.swift; sourceTree = "<group>"; };
 		8D6DD55428D4CA4100738157 /* IslandModel2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IslandModel2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D6DD55728D4CA4100738157 /* IslandModel2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IslandModel2App.swift; sourceTree = "<group>"; };
 		8D6DD55928D4CA4100738157 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -119,8 +121,9 @@
 				8D6DD58428D702DA00738157 /* CityModel.swift */,
 				8D4E5B2128E09F8A00C38BBE /* PortModel.swift */,
 				8D4E5B1B28DFB30300C38BBE /* MineModel.swift */,
-				8D4E5B2328E09F9700C38BBE /* Stats.swift */,
+				8D4E5B2328E09F9700C38BBE /* EconomyCounter.swift */,
 				8D4E5B1D28DFB33E00C38BBE /* Negotiation.swift */,
+				8D4E5B2528E4592600C38BBE /* StatCounter.swift */,
 			);
 			path = IslandModel2;
 			sourceTree = "<group>";
@@ -286,9 +289,10 @@
 				8D4E5B1E28DFB33E00C38BBE /* Negotiation.swift in Sources */,
 				8D4E5B2028DFB3B500C38BBE /* Controller.swift in Sources */,
 				8D4E5B2228E09F8A00C38BBE /* PortModel.swift in Sources */,
-				8D4E5B2428E09F9700C38BBE /* Stats.swift in Sources */,
+				8D4E5B2428E09F9700C38BBE /* EconomyCounter.swift in Sources */,
 				8D6DD55828D4CA4100738157 /* IslandModel2App.swift in Sources */,
 				8D6DD58528D702DA00738157 /* CityModel.swift in Sources */,
+				8D4E5B2628E4592600C38BBE /* StatCounter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,7 +450,7 @@
 				CODE_SIGN_ENTITLEMENTS = IslandModel2/IslandModel2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"IslandModel2/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -455,7 +459,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = arturs.IslandModel2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -471,7 +475,7 @@
 				CODE_SIGN_ENTITLEMENTS = IslandModel2/IslandModel2.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"IslandModel2/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -480,7 +484,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = arturs.IslandModel2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

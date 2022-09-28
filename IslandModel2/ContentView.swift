@@ -22,6 +22,7 @@ struct ContentView: View {
                 GameView(MenuItem: $MenuItem)
             }
         }.environmentObject(mh)
+            //.frame(width: 400.0, height: 300.0, alignment: .topLeading)
     }
 }
 
@@ -31,7 +32,11 @@ struct MainView:View {
     var body: some View {
         VStack {
             HStack {
-                Text("Island economy simulator v0.1").padding()
+                Text("Island economy simulator v0.1")
+                    .padding()
+                    
+            }
+            HStack {
                 Button(action: {
                     MenuItem = 1
                 }) {
@@ -64,7 +69,7 @@ struct GameView: View {
                 .tabItem {
                     Text("Port")
                 }
-            Text("Body")
+            StatContentView()
                 .tabItem {
                     Text("Stats")
                 }
@@ -263,10 +268,52 @@ struct PortContentView:View {
         }
     }
 }
+
+struct StatCounter: Identifiable {
+    let statName: String
+    let stat1d: String
+    let stat5d: String
+    let stat30d: String
+    let statAll: String
+    let id = UUID()
+}
+
+private var stat = [
+    StatCounter(statName: "Mined", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
+    StatCounter(statName: "Export", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
+    StatCounter(statName: "Import", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
+    StatCounter(statName: "Storage", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
+    StatCounter(statName: "Sell", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0"),
+    StatCounter(statName: "Buy", stat1d: "0.0", stat5d: "0.0", stat30d: "0.0", statAll: "0.0")
+]
+
+struct StatContentView: View {
+    @EnvironmentObject var mh:SimulationController
+    var body: some View {
+        VStack {
+            HStack {
+                Text("Table of statistics")
+            }
+            //VStack {
+                Table(stat) {
+                    TableColumn("Stat", value:\.statName)
+                    TableColumn("1d", value:\.stat1d)
+                    TableColumn("5d", value:\.stat5d)
+                    TableColumn("30d", value:\.stat30d)
+                    TableColumn("Stat", value:\.statAll)
+                }
+            //}
+            HStack {
+                Text("All data")
+            }
+        }
+    }
+}
 /*
 struct ContentView_Previews: PreviewProvider {
     @Binding var switchSucess: Bool
     static var previews: some View {
-        //ContentView()
+        ContentView()
     }
-}*/
+}
+*/

@@ -14,6 +14,7 @@ class SimulationController: ObservableObject {
     var mb:MineBase
     var cb:CityBase
     var pb:PortBase
+    var ec:EconomyCounter
     @Published var mineStorageLabel:String
     @Published var mineProdcutionLabel:String
     @Published var minePriceLabel:String
@@ -32,6 +33,7 @@ class SimulationController: ObservableObject {
         self.mb = MineBase()
         self.cb = CityBase()
         self.pb = PortBase()
+        self.ec = EconomyCounter()
         mineCashLabel = ""
         minePriceLabel = ""
         mineStorageLabel = ""
