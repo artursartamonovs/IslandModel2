@@ -31,11 +31,13 @@ struct MainView:View {
     
     var body: some View {
         VStack {
+            Spacer()
             HStack {
                 Text("Island economy simulator v0.1")
                     .padding()
                     
             }
+            Spacer()
             HStack {
                 Button(action: {
                     MenuItem = 1
@@ -43,6 +45,7 @@ struct MainView:View {
                     Text("Start game")
                 }.padding()
             }
+            Spacer()
         }
     }
 }
@@ -71,7 +74,7 @@ struct GameView: View {
                 }
             StatContentView()
                 .tabItem {
-                    Text("Stats")
+                    Text("Total")
                 }
         }.environmentObject(mh)
     }
@@ -82,15 +85,27 @@ struct StartContentView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             Button(action: {}) {
                 Text("Start")
             }.padding()
-            Button(action: {}) {
+            Spacer()
+            Button(action: {
+                mh.cb.simulationStep()
+                mh.runPbStep()
+                mh.runMbStep()
+                mh.ec.mineAddVal(mh.mb.getStorageChange())
+                mh.updateStat()
+                print("All all cities in single step")
+            }) {
                 Text("Step")
             }.padding()
+            Spacer()
             Button(action: {}) {
                 Text("Reset")
             }.padding()
+                .frame(minWidth: 0.0,maxWidth: .infinity)
+            Spacer()
         }.padding()
     }
 }
@@ -100,7 +115,9 @@ struct CityContentView: View {
     @EnvironmentObject var mh:SimulationController
     
     var body: some View {
+        
         VStack {
+            
             Text("Boring city its all about transporting good from one part to other")
             HStack {
                 Text("Buy Rate:")
@@ -150,8 +167,10 @@ struct CityContentView: View {
                 }) {
                     Text("Trade")
                 }
+                
             }
         }
+        
     }
 }
 
@@ -290,7 +309,7 @@ struct StatContentView: View {
                     TableColumn("5d",   value:\.stat5d)
                     TableColumn("30d",  value:\.stat30d)
                     TableColumn("Stat", value:\.statAll)
-                }
+                }.lineLimit(6)
                 
             }
             }

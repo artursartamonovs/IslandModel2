@@ -98,9 +98,33 @@ class EconomyCounter {
     }
     
     func updateTable() {
+        //let formater = NumberFormatter()
+        //formater.
+        //export
+        tableContent[0].statName = "Export"
+        
+        //import
+        tableContent[1].statName = "Import"
+        
         //update mine
         tableContent[2].statName = "Mine"
-        tableContent[2].stat1d = String(mineCounter.get1dAVG())
+        tableContent[2].stat1d = String(format:"%.1f",mineCounter.get1dAVG())
+        tableContent[2].stat5d = String(format:"%.1f",mineCounter.get5dAVG())
+        tableContent[2].stat30d = String(format:"%.1f",mineCounter.get30dAVG())
+        tableContent[2].statAll = String(format:"%.1f",mineCounter.getAll())
+        
+        //storage
+        tableContent[3].statName = "Storage"
+        tableContent[3].stat1d = String(format:"%.1f",storageCounter.get1dAVG())
+        tableContent[3].stat5d = String(format:"%.1f",storageCounter.get5dAVG())
+        tableContent[3].stat30d = String(format:"%.1f",storageCounter.get30dAVG())
+        tableContent[3].statAll = String(format:"%.1f",storageCounter.getAll())
+        
+        //sell
+        tableContent[4].statName = "Sell"
+        
+        //buy
+        tableContent[5].statName = "Buy"
     }
     
     func mineAddVal(_ val: Double) {

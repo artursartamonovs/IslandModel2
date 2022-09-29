@@ -100,6 +100,9 @@ class SimulationController: ObservableObject {
     
     func updateStat() {
         self.updateEconomy += 1
+        //get all storage values
+        let storage = self.mb.storage + self.cb.storage + self.pb.storage
+        self.ec.storageCounter.addVal(storage)
         self.ec.updateTable()
     }
     

@@ -10,7 +10,7 @@ import Foundation
 class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
     var storage:Double = 0;
     var storageMax: Double = 100;
-    var storagePrevVal: Double = 0.0;
+    var storageChangeVal: Double = 0.0;
     var productionRate:Double = 0;
     var productionRateMax:Double = 0;
     var productionRateMin:Double = 0;
@@ -24,7 +24,7 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
     
     func reset() {
         storage = 4;
-        storagePrevVal = 0;
+        storageChangeVal = 0;
         storageMax = 100;
         productionRate = 2;
         productionRateMin = 2;
@@ -65,7 +65,6 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
         let totalPrice:Double = requestAmount*requestPrice;
         print("Mine -> Agreed sell price \(requestPrice) amount \(requestAmount)");
         self.cash += totalPrice;
-        self.storagePrevVal = self.storage
         self.storage -= requestAmount;
         
         print("Mine sold \(requestAmount) for \(requestPrice) per piece")
@@ -87,10 +86,11 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
         
         //add final storage value
         self.storage += addToStorage
+        self.storageChangeVal = addToStorage
         if self.storage > self.storageMax {
             let vasted = self.storage - self.storageMax
             print("Mine vasted \(vasted) resources")
-            self.storagePrevVal = self.storage
+            self.storageChangeVal -= vasted
             self.storage = self.storageMax
         }
         if self.storage < 0 {
@@ -102,7 +102,7 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
     }
     
     func getStorageChange() -> Double {
-        return self.storage - self.storagePrevVal
+        return self.storageChangeVal
     }
 }
 
