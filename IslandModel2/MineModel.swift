@@ -15,6 +15,7 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
     var productionRateMax:Double = 0;
     var productionRateMin:Double = 0;
     var productionCost:Double = 0;
+    var productSold: Double = 0;
     var price:Double = 0;
     var cash:Double = 0;
     
@@ -66,6 +67,7 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
         print("Mine -> Agreed sell price \(requestPrice) amount \(requestAmount)");
         self.cash += totalPrice;
         self.storage -= requestAmount;
+        
         
         print("Mine sold \(requestAmount) for \(requestPrice) per piece")
         

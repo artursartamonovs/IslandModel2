@@ -15,6 +15,7 @@ class SimulationController: ObservableObject {
     var cb:CityBase
     var pb:PortBase
     var ec:EconomyCounter
+    var ex:ExportModel
     @Published var updateEconomy: Int {
         willSet {
             objectWillChange.send()
@@ -39,6 +40,7 @@ class SimulationController: ObservableObject {
         self.cb = CityBase()
         self.pb = PortBase()
         self.ec = EconomyCounter()
+        self.ex = ExportModel()
         mineCashLabel = ""
         minePriceLabel = ""
         mineStorageLabel = ""
@@ -68,7 +70,8 @@ class SimulationController: ObservableObject {
         portStorageLabel = self.pb.getStorage()
         portBuyPriceLabel = self.pb.getBuyPrice()
         portSellPriceLabel = self.pb.getSellPrice()
-        portDemandLabel = self.pb.getDemand()
+        //portDemandLabel = self.pb.getDemand()
+        portDemandLabel = self.ex.getDemand()
     }
     
     func runMbStep() {
@@ -86,9 +89,16 @@ class SimulationController: ObservableObject {
         update()
     }
     
+    func runExStep() {
+        ex.simulationStep()
+        update()
+    }
+    
     func reset() {
         mb.reset()
         cb.reset()
+        pb.reset()
+        ex.reset()
     }
     
     func runAllStep() {

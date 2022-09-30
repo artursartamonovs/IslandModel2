@@ -35,7 +35,6 @@ struct MainView:View {
             HStack {
                 Text("Island economy simulator v0.1")
                     .padding()
-                    
             }
             Spacer()
             HStack {
@@ -91,7 +90,7 @@ struct StartContentView: View {
             }.padding()
             Spacer()
             Button(action: {
-                mh.cb.simulationStep()
+                mh.runCbStep()
                 mh.runPbStep()
                 mh.runMbStep()
                 mh.ec.mineAddVal(mh.mb.getStorageChange())
@@ -113,6 +112,10 @@ struct StartContentView: View {
 //CITY
 struct CityContentView: View {
     @EnvironmentObject var mh:SimulationController
+    
+    @State private var autotradeOn = false
+    @State private var autostoreOn = false
+    @State private var storeAmount = ""
     
     var body: some View {
         
@@ -145,6 +148,7 @@ struct CityContentView: View {
                 }
             }
             HStack {
+                Toggle("Autotrade", isOn: $autotradeOn)
                 Button(action:{
                     let buyer = mh.cb
                     let seller = mh.mb
@@ -168,6 +172,12 @@ struct CityContentView: View {
                     Text("Trade")
                 }
                 
+                
+            }
+            
+            HStack {
+                Toggle("Store", isOn: $autostoreOn)
+                TextField("Target", text: $storeAmount)
             }
         }
         
@@ -192,6 +202,10 @@ struct MineContentView: View {
     @State var labelProduction = "100"
     @State var labelPrice:String = "100"
     
+    @State private var autotradeOn = false
+    @State private var autostoreOn = false
+    @State private var storeAmount = ""
+    
     var body: some View {
         VStack {
             Text("Miners city, all about mining here, greem and misty place.")
@@ -211,6 +225,7 @@ struct MineContentView: View {
                 Text("Cash:")
                 Text(String(mh.mineCashLabel))
             }
+            
             HStack {
                 Button(action:{
                     mh.runMbStep()
@@ -220,6 +235,10 @@ struct MineContentView: View {
                 }) {
                     Text("Step")
                 }
+            }
+            HStack {
+                Toggle("Store", isOn: $autostoreOn)
+                TextField("Target", text: $storeAmount)
             }
         }
     }
@@ -233,8 +252,18 @@ extension View {
 
 struct PortContentView:View {
     @EnvironmentObject var mh:SimulationController
+    
+    @State private var autotradeOn = false
+    @State private var autostoreOn = false
+    @State private var storeAmount = ""
+    
+    
     var body: some View {
         VStack {
+            HStack {
+                Text("Cash")
+                Text(mh.portCashLabel)
+            }
             HStack {
                 Text("Storage")
                 Text(mh.portStorageLabel)
@@ -261,10 +290,11 @@ struct PortContentView:View {
             }
             HStack {
                 Button(action:{
+                    //trade between port and city
                     let buyer = mh.pb
                     let seller = mh.cb
                     let ng = Negotiation();
-                    print("Port")
+                    print("Port trade")
                     print("\(buyer.negotiationBuyAmount()) \(buyer.negotiationBuyPrice())")
                     print("\(seller.negotiationSellAmount()) \(seller.negotiationSellPrice())")
                     ng.offerBuyAmount(buyer.negotiationBuyAmount())
@@ -279,12 +309,46 @@ struct PortContentView:View {
                         let _ = buyer.buy(buyerResult.amount, buyerResult.price)
                         let _ = seller.sell(sellerResult.amount, sellerResult.price)
                     }
+                    
+                    
+                    
                     print("Port: Press Trade button")
                     mh.runPbStep()
+                    
                     
                 }) {
                     Text("Trade")
                 }
+                Button(action: {
+                    print("Export goods")
+                    //trade between port and outerland
+                    print("Outerland trade")
+                    let export_buyer = mh.ex
+                    let port_seller = mh.pb
+                    let ex_pb_negotiation = Negotiation()
+                    print("\(export_buyer.negotiationBuyAmount()) \(export_buyer.negotiationBuyPrice())")
+                    print("\(port_seller.negotiationSellAmount()) \(port_seller.negotiationSellPrice())")
+                    ex_pb_negotiation.offerBuyAmount(export_buyer.negotiationBuyAmount())
+                    ex_pb_negotiation.offferBuyPrice(export_buyer.negotiationBuyPrice())
+                    ex_pb_negotiation.offerSellPrice(port_seller.negotiationSellPrice())
+                    ex_pb_negotiation.offerSellAmount(port_seller.negotiationSellAmount())
+                    ex_pb_negotiation.simpleNegotiation()
+                    let ex_pb_sellerResult = ex_pb_negotiation.sellerNegotiation()
+                    let ex_pb_buyerResult = ex_pb_negotiation.buyerNegoatiation()
+                    if ex_pb_sellerResult.succeffull && ex_pb_buyerResult.succeffull {
+                        print("Transaction can be succesfull")
+                        let _ = export_buyer.buy(ex_pb_buyerResult.amount, ex_pb_buyerResult.price)
+                        let _ = port_seller.sell(ex_pb_sellerResult.amount, ex_pb_sellerResult.price)
+                    }
+                    mh.runExStep()
+                }) {
+                    Text("Export")
+                }
+            }
+            
+            HStack {
+                Toggle("Store", isOn: $autostoreOn)
+                TextField("Target", text: $storeAmount)
             }
         }
     }

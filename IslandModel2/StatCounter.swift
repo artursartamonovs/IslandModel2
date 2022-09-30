@@ -18,9 +18,9 @@ struct StatCounter: Identifiable {
     
     init() {
         statName = "NoStat"
-        stat1d = "N/A"
-        stat5d = "N/A"
-        stat30d = "N/A"
-        statAll = "N/A"
+        stat1d = "0.0"
+        stat5d = "0.0"
+        stat30d = "0.0"
+        statAll = "0.0"
     }
 }

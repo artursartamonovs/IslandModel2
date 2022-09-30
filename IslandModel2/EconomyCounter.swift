@@ -123,6 +123,7 @@ class EconomyCounter {
         //sell
         tableContent[4].statName = "Sell"
         
+        
         //buy
         tableContent[5].statName = "Buy"
     }
