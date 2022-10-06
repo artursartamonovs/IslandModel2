@@ -18,6 +18,8 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
     var productSold: Double = 0;
     var price:Double = 0;
     var cash:Double = 0;
+    var storageAutoSave: Bool = false
+    var storageAutoLimit: Double = 0.0
     
     init() {
         reset()
@@ -49,8 +51,26 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
     }
     
     func requestSell(_ requestAmount: Double) -> Double {
-        if (requestAmount > Double(self.storage)) {
-            return Double(self.storage);
+        //check if autoStore is enabled
+        if (storageAutoSave) {
+            print("Store in storage")
+            print("Limit \(self.storageAutoLimit)")
+            //there is enought to save
+            if self.storage > self.storageAutoLimit {
+                let avaliable = self.storage - self.storageAutoLimit
+                if (avaliable > requestAmount) {
+                    return requestAmount
+                } else {
+                    return avaliable
+                }
+            } else {
+                //until storage isnt full dont offer anything for sale
+                return 0.0
+            }
+        } else {
+            if (requestAmount > Double(self.storage)) {
+                return Double(self.storage);
+            }
         }
         return requestAmount;
     }
@@ -106,6 +126,12 @@ class MineBase: MineBaseDelegate, NegotiationSellerProtocol {
     func getStorageChange() -> Double {
         return self.storageChangeVal
     }
+    
+    func setStorageAutoStore(_ enable: Bool, _ storeLimit: Double)  {
+        self.storageAutoSave = enable
+        self.storageAutoLimit = storeLimit
+        print("set storage autostore \(enable) \(storeLimit)")
+    }
 }
 
 protocol MineBaseDelegate: AnyObject {
@@ -134,3 +160,5 @@ extension MineBase {
         return String(self.productionRate)
     }
 }
+
+

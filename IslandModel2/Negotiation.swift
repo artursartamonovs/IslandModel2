@@ -34,7 +34,7 @@ extension MineBase {
     }
     
     func negotiationSellAmount() -> Double {
-        return self.storage
+        return self.requestSell(self.storage)
     }
 }
 
@@ -110,7 +110,7 @@ class Negotiation {
     func offerBuyAmount(_ amount: Double) {
         buyerAmount = amount
     }
-    func offferBuyPrice(_ price: Double) {
+    func offerBuyPrice(_ price: Double) {
         buyerPrice = price
     }
     func simpleNegotiation() {

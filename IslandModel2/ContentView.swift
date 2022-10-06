@@ -90,6 +90,11 @@ struct StartContentView: View {
             }.padding()
             Spacer()
             Button(action: {
+                //run all trades
+                mh.tradeMineCity()
+                mh.tradeCityPort()
+                mh.tradePortExport()
+                //run all steps
                 mh.runCbStep()
                 mh.runPbStep()
                 mh.runMbStep()
@@ -114,30 +119,41 @@ struct CityContentView: View {
     @EnvironmentObject var mh:SimulationController
     
     @State private var autotradeOn = false
-    @State private var autostoreOn = false
-    @State private var storeAmount = ""
+    @State private var autostoreOn = false {
+        didSet {
+            //mh.mb.setStorageAutoStore(autostoreOn, Double(storeAmount))
+            print("setStorageAutoStore \(autostoreOn) \(storeAmount)")
+        }
+    }
+    @State private var storeAmount = 0 {
+        didSet {
+            //mh.mb.setStorageAutoStore(autostoreOn, Double(storeAmount))
+            print("setStorageAutoStore \(autostoreOn) \(storeAmount)")
+        }
+    }
     
     var body: some View {
         
         VStack {
-            
             Text("Boring city its all about transporting good from one part to other")
+            Divider()
             HStack {
-                Text("Buy Rate:")
-                Text(mh.cityBuyPriceLabel)
+                Text("Buy Rate:").storageStyleLeading()
+                Text(mh.cityBuyPriceLabel).storageStyleTrailing()
             }
             HStack {
-                Text("Sell Rate:")
-                Text(mh.citySellPriceLabel)
+                Text("Sell Rate:").storageStyleLeading()
+                Text(mh.citySellPriceLabel).storageStyleTrailing()
             }
             HStack {
-                Text("Storage:")
-                Text("10")
+                //Text("Storage:")//.frame(maxWidth: .infinity, alignment: .leading)
+                //Text("10")//.frame(maxWidth: .infinity, alignment: .trailing)
             }.storageValue(text:mh.cityStorageLabel)
             HStack {
-                Text("Cash:")
-                Text(mh.cityCashLabel)
+                Text("Cash:").storageStyleLeading()
+                Text(mh.cityCashLabel).storageStyleTrailing()
             }
+            Divider()
             HStack {
                 Button(action:{
                     mh.cb.simulationStep()
@@ -150,22 +166,7 @@ struct CityContentView: View {
             HStack {
                 Toggle("Autotrade", isOn: $autotradeOn)
                 Button(action:{
-                    let buyer = mh.cb
-                    let seller = mh.mb
-                    let ng = Negotiation();
-                    ng.offerBuyAmount(buyer.negotiationBuyAmount())
-                    ng.offferBuyPrice(buyer.negotiationBuyPrice())
-                    ng.offerSellPrice(seller.negotiationSellPrice())
-                    ng.offerSellAmount(seller.negotiationSellAmount())
-                    ng.simpleNegotiation()
-                    let sellerResult = ng.sellerNegotiation()
-                    let buyerResult = ng.buyerNegoatiation()
-                    if sellerResult.succeffull && buyerResult.succeffull {
-                        print("Transaction can be succesfull")
-                        let _ = buyer.buy(buyerResult.amount, buyerResult.price)
-                        let _ = seller.sell(sellerResult.amount, sellerResult.price)
-                    }
-                    print("City: Press Trade button")
+                    mh.tradeMineCity()
                     mh.runMbStep()
                     
                 }) {
@@ -177,7 +178,9 @@ struct CityContentView: View {
             
             HStack {
                 Toggle("Store", isOn: $autostoreOn)
-                TextField("Target", text: $storeAmount)
+                TextField("Target", value: $storeAmount, format: .number)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
             }
         }
         
@@ -188,9 +191,40 @@ struct StorageValue: ViewModifier {
     var text: String
     func body(content: Content) -> some View {
         HStack {
-            Text("Storage:")
-            Text(text)
+            Text("Storage:").frame(maxWidth: .infinity, alignment: .leading)
+            Text(text).frame(maxWidth: .infinity, alignment: .trailing)
         }
+    }
+}
+
+extension View {
+    func storageValue(text: String) -> some View {
+        modifier(StorageValue(text: text))
+    }
+}
+struct StorageStyleLeading: ViewModifier {
+    func body(content: Content) -> some View {
+            content
+            .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+struct StorageStyleTrailing: ViewModifier {
+    func body(content: Content) -> some View {
+            content
+            .frame(maxWidth: .infinity, alignment: .trailing)
+    }
+}
+
+extension View {
+    func storageStyleTrailing() -> some View {
+        modifier(StorageStyleTrailing())
+    }
+}
+
+extension View {
+    func storageStyleLeading() -> some View {
+        modifier(StorageStyleLeading())
     }
 }
 
@@ -202,32 +236,35 @@ struct MineContentView: View {
     @State var labelProduction = "100"
     @State var labelPrice:String = "100"
     
-    @State private var autotradeOn = false
-    @State private var autostoreOn = false
-    @State private var storeAmount = ""
+    @State  var autotradeOn = false
+    @State  var autostoreOn = false 
+    @State private var storeAmount = 0
     
     var body: some View {
         VStack {
             Text("Miners city, all about mining here, greem and misty place.")
+            Divider()
             HStack {
-                Text("Storage:")
-                Text("2")
+                //Text("Storage:").frame(maxWidth: .infinity, alignment: .leading)
+                //Text("2").frame(maxWidth: .infinity, alignment: .trailing)
             }.storageValue(text:mh.mineStorageLabel)
             HStack {
-                Text("Production:")
-                Text(String(mh.mineProdcutionLabel))
+                Text("Production:").storageStyleLeading()
+                Text(String(mh.mineProdcutionLabel)).storageStyleTrailing()
             }
             HStack {
-                Text("Price:")
-                Text(String(mh.minePriceLabel))
+                Text("Price:").storageStyleLeading()
+                Text(String(mh.minePriceLabel)).storageStyleTrailing()
             }
             HStack {
-                Text("Cash:")
-                Text(String(mh.mineCashLabel))
+                Text("Cash:").storageStyleLeading()
+                Text(String(mh.mineCashLabel)).storageStyleTrailing()
             }
+            Divider()
             
             HStack {
                 Button(action:{
+                    mh.mb.setStorageAutoStore(autostoreOn, Double(storeAmount))
                     mh.runMbStep()
                     mh.ec.mineAddVal(mh.mb.getStorageChange())
                     mh.updateStat()
@@ -238,48 +275,55 @@ struct MineContentView: View {
             }
             HStack {
                 Toggle("Store", isOn: $autostoreOn)
-                TextField("Target", text: $storeAmount)
+                    .padding()
+                    .onChange(of: autostoreOn){
+                        newValue in mh.mb.setStorageAutoStore(autostoreOn, Double(storeAmount))
+                    }
+                TextField("Target", value: $storeAmount, format: .number)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
+                    .onChange(of: storeAmount){
+                        newValue in mh.mb.setStorageAutoStore(autostoreOn, Double(storeAmount))
+                    }
             }
         }
     }
 }
 
-extension View {
-    func storageValue(text: String) -> some View {
-        modifier(StorageValue(text: text))
-    }
-}
+
 
 struct PortContentView:View {
     @EnvironmentObject var mh:SimulationController
     
     @State private var autotradeOn = false
     @State private var autostoreOn = false
-    @State private var storeAmount = ""
+    @State private var storeAmount = 0
     
     
     var body: some View {
         VStack {
+            Divider()
             HStack {
-                Text("Cash")
-                Text(mh.portCashLabel)
+                Text("Cash").storageStyleLeading()
+                Text(mh.portCashLabel).storageStyleTrailing()
             }
             HStack {
-                Text("Storage")
-                Text(mh.portStorageLabel)
+                Text("Storage").storageStyleLeading()
+                Text(mh.portStorageLabel).storageStyleTrailing()
             }
             HStack {
-                Text("Sell price")
-                Text(mh.portSellPriceLabel)
+                Text("Sell price").storageStyleLeading()
+                Text(mh.portSellPriceLabel).storageStyleTrailing()
             }
             HStack {
-                Text("Buy price")
-                Text(mh.portBuyPriceLabel)
+                Text("Buy price").storageStyleLeading()
+                Text(mh.portBuyPriceLabel).storageStyleTrailing()
             }
             HStack {
-                Text("Demand")
-                Text(mh.portDemandLabel)
+                Text("Demand").storageStyleLeading()
+                Text(mh.portDemandLabel).storageStyleTrailing()
             }
+            Divider()
             HStack {
                 Button(action:{
                     mh.runPbStep()
@@ -291,31 +335,9 @@ struct PortContentView:View {
             HStack {
                 Button(action:{
                     //trade between port and city
-                    let buyer = mh.pb
-                    let seller = mh.cb
-                    let ng = Negotiation();
-                    print("Port trade")
-                    print("\(buyer.negotiationBuyAmount()) \(buyer.negotiationBuyPrice())")
-                    print("\(seller.negotiationSellAmount()) \(seller.negotiationSellPrice())")
-                    ng.offerBuyAmount(buyer.negotiationBuyAmount())
-                    ng.offferBuyPrice(buyer.negotiationBuyPrice())
-                    ng.offerSellPrice(seller.negotiationSellPrice())
-                    ng.offerSellAmount(seller.negotiationSellAmount())
-                    ng.simpleNegotiation()
-                    let sellerResult = ng.sellerNegotiation()
-                    let buyerResult = ng.buyerNegoatiation()
-                    if sellerResult.succeffull && buyerResult.succeffull {
-                        print("Transaction can be succesfull")
-                        let _ = buyer.buy(buyerResult.amount, buyerResult.price)
-                        let _ = seller.sell(sellerResult.amount, sellerResult.price)
-                    }
-                    
-                    
-                    
+                    mh.tradeCityPort()
                     print("Port: Press Trade button")
                     mh.runPbStep()
-                    
-                    
                 }) {
                     Text("Trade")
                 }
@@ -323,23 +345,7 @@ struct PortContentView:View {
                     print("Export goods")
                     //trade between port and outerland
                     print("Outerland trade")
-                    let export_buyer = mh.ex
-                    let port_seller = mh.pb
-                    let ex_pb_negotiation = Negotiation()
-                    print("\(export_buyer.negotiationBuyAmount()) \(export_buyer.negotiationBuyPrice())")
-                    print("\(port_seller.negotiationSellAmount()) \(port_seller.negotiationSellPrice())")
-                    ex_pb_negotiation.offerBuyAmount(export_buyer.negotiationBuyAmount())
-                    ex_pb_negotiation.offferBuyPrice(export_buyer.negotiationBuyPrice())
-                    ex_pb_negotiation.offerSellPrice(port_seller.negotiationSellPrice())
-                    ex_pb_negotiation.offerSellAmount(port_seller.negotiationSellAmount())
-                    ex_pb_negotiation.simpleNegotiation()
-                    let ex_pb_sellerResult = ex_pb_negotiation.sellerNegotiation()
-                    let ex_pb_buyerResult = ex_pb_negotiation.buyerNegoatiation()
-                    if ex_pb_sellerResult.succeffull && ex_pb_buyerResult.succeffull {
-                        print("Transaction can be succesfull")
-                        let _ = export_buyer.buy(ex_pb_buyerResult.amount, ex_pb_buyerResult.price)
-                        let _ = port_seller.sell(ex_pb_sellerResult.amount, ex_pb_sellerResult.price)
-                    }
+                    mh.tradePortExport()
                     mh.runExStep()
                 }) {
                     Text("Export")
@@ -348,7 +354,9 @@ struct PortContentView:View {
             
             HStack {
                 Toggle("Store", isOn: $autostoreOn)
-                TextField("Target", text: $storeAmount)
+                TextField("Target", value: $storeAmount, format: .number)
+                    .textFieldStyle(.roundedBorder)
+                    .padding()
             }
         }
     }
